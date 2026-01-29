@@ -1,0 +1,22 @@
+# https://docs.codecov.com/docs/codecov-yaml
+
+ignore:
+  - "test/**"
+  - "src/main/resources/**"
+  - "src/main/**/models/**"
+  - "src/main/**/Application.java"
+coverage:
+  status:
+    project:
+      controllers:
+        paths:
+          - "src/main/**/controllers/**/*"
+      repositories:
+        paths:
+          - "src/main/**/repositories/**/*"
+      services:
+        paths:
+          - "src/main/**/services/**/*"
+    patch:
+      default:
+        informational: true
