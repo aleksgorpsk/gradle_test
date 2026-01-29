@@ -7,18 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 import ar.com.nanotaboada.java.samples.spring.boot.services.HttpBinService;
+import ar.com.nanotaboada.java.samples.spring.boot.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.ISBN;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import ar.com.nanotaboada.java.samples.spring.boot.models.BookDTO;
@@ -44,9 +38,12 @@ public class BooksController {
 
     private final BooksService booksService;
     private final HttpBinService httpBinService;
-    public BooksController(BooksService booksService, HttpBinService httpBinService) {
+    private final JwtUtil jwtUtil;
+
+    public BooksController(BooksService booksService, HttpBinService httpBinService, JwtUtil jwtUtil) {
         this.booksService = booksService;
         this.httpBinService = httpBinService;
+        this.jwtUtil = jwtUtil;
     }
 
     /*
@@ -100,10 +97,15 @@ public class BooksController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO[].class)))
     })
-    public ResponseEntity<List<BookDTO>> getAll() {
+    public ResponseEntity<List<BookDTO>> getAll(
+            @RequestHeader("Authorization")  String authHeader
+    ) {
         String ops = httpBinService.getJson();
         log.info("!!!!"+ops);
-        log.info("!!!! getAll");
+        log.info("!!!! getAll"+ authHeader);
+        String usName = jwtUtil.extractUsername(authHeader.substring(7));
+        log.info("!!!! usName"+ usName);
+
         try {
             List<BookDTO> books = booksService.retrieveAll();
             return ResponseEntity.status(HttpStatus.OK).body(books);
