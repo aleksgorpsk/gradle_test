@@ -101,8 +101,8 @@ public class BooksController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO[].class)))
     })
     public ResponseEntity<List<BookDTO>> getAll() {
-//        String ops = httpBinService.getJson();
-  //      log.info("!!!!"+ops);
+        String ops = httpBinService.getJson();
+        log.info("!!!!"+ops);
         log.info("!!!! getAll");
         try {
             List<BookDTO> books = booksService.retrieveAll();

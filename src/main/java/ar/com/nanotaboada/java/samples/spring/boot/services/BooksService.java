@@ -57,10 +57,11 @@ public class BooksService {
 
     @Cacheable(value = "books")
     public List<BookDTO> retrieveAll() {
+
         log.info("retrieveAll");
         return StreamSupport.stream(booksRepository.findAll().spliterator(), false)
                 .map(this::mapFrom)
-                .peek(x-> log.info("book:"+ x.toString()))
+//                .peek(x-> log.info("book:"+ x.toString()))
                 .toList();
     }
 

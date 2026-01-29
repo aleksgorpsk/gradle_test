@@ -1,9 +1,5 @@
 package ar.com.nanotaboada.java.samples.spring.boot.services;
 
-import ar.com.nanotaboada.java.samples.spring.boot.security.JwtInterceptor;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.crypto.SecretKey;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
 
 
 @Slf4j
@@ -36,33 +29,15 @@ public class HttpBinService implements InitializingBean {
 
     public void afterPropertiesSet() {
         log.info("!! afterPropertiesSet !");
-     //   restTemplate.setInterceptors(Collections.singletonList(new JwtInterceptor(jwtToken)));
 
     };
-
-    private String jwtSecret = "4261656C64756E67";
-
-    SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-    private SecretKey createJWT(){
-        String result = Jwts.builder()
-                .subject(("testUser"))
-                .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + 15000))
-                .signWith(getSigningKey())
-                .compact();
-
-        byte[] keyBytes = Decoders.BASE64.decode(result);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 
 
     @PostConstruct
     public void init(){
         log.info("!! Init !");
     }
+
     public String getJson(){
         log.info("restUrl:"+restUrl);
         HttpHeaders headers = new HttpHeaders();
@@ -72,5 +47,4 @@ public class HttpBinService implements InitializingBean {
         return restTemplate.exchange(
                 restUrl, HttpMethod.GET, entity, String.class).getBody();
     }
-
 }
