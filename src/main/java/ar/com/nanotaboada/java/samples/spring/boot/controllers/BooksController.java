@@ -100,11 +100,11 @@ public class BooksController {
     public ResponseEntity<List<BookDTO>> getAll(
             @RequestHeader("Authorization")  String authHeader
     ) {
-        String ops = httpBinService.getJson();
-        log.info("!!!!"+ops);
+     //   String ops = httpBinService.getJson();
+//        log.info("!!!!"+ops);
         log.info("!!!! getAll"+ authHeader);
-        String usName = jwtUtil.extractUsername(authHeader.substring(7));
-        log.info("!!!! usName"+ usName);
+  //      String usName = jwtUtil.extractUsername(authHeader.substring(7));
+    //    log.info("!!!! usName"+ usName);
 
         try {
             List<BookDTO> books = booksService.retrieveAll();

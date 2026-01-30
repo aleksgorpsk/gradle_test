@@ -1,6 +1,9 @@
 package ar.com.nanotaboada.java.samples.spring.boot.controllers;
 
+import ar.com.nanotaboada.java.samples.spring.boot.controllers.model.LoginRequest;
 import ar.com.nanotaboada.java.samples.spring.boot.utils.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +23,11 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
         // Demo validation (replace with DB check in real apps)
-        if (!"password".equals(request.password())) {
+        if (!"password".equals(request.getPassword())) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
-
-        String token = jwtUtil.generateToken(request.username());
-        return ResponseEntity.ok(new JwtResponse(token));
+        String token = jwtUtil.generateToken(request.getUsername());
+       return ResponseEntity.status(HttpStatus.OK).body(String.format("{ \"token\" : \"%s\" }", token));
     }
 
-    record LoginRequest(String username, String password) {}
-    record JwtResponse(String token) {}
 }
