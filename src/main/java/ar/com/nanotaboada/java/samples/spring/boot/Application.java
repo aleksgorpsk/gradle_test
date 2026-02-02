@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * A configuration class that declares one or more Bean methods and also
  * triggers auto-configuration and component scanning.
  */
-@SpringBootApplication
+@SpringBootApplication()
 @Slf4j
 @EnableCaching
 public class Application {
